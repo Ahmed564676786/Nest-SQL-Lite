@@ -19,7 +19,7 @@ export class UsersController {
   ) {}
 
   @Post('signup')
-  signup() {
+  signup(@Body ) {
     return 'Signup user';
   }
 
