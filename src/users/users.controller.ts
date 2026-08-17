@@ -9,20 +9,23 @@ import {
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 
-
+@UseInterceptors(UserResponseInterceptor)
 @Controller('users')
+
 export class UsersController {
 
    constructor(
     private readonly usersService: UsersService,
   ) {}
 
-  @Post('signup')
-  signup(@Body ) {
-    return 'Signup user';
-  }
 
+  @Post('signup')
+  signup(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
+  
   @Get('/')
   getAllUsers(){
 
