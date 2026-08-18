@@ -36,6 +36,12 @@ let UsersService = class UsersService {
         await this.usersRepository.update(id, userData);
         return this.findOne(id);
     }
+    async isEmailTaken(email) {
+        const user = await this.userRepository.findOne({
+            where: { email },
+        });
+        return !!user;
+    }
     async remove(id) {
         await this.usersRepository.delete(id);
         return {

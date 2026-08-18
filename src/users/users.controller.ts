@@ -6,32 +6,34 @@ import {
   Delete,
   Param,
   Body,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 
+import { UserResponseInterceptor } from '../interceptors/user-response/user-response.interceptor';
+import { AuthService } from './auth.service';
+
 @UseInterceptors(UserResponseInterceptor)
 @Controller('users')
-
 export class UsersController {
-
-   constructor(
+  constructor(
     private readonly usersService: UsersService,
+    private readonly authService:AuthService
   ) {}
 
-
-  @Post('signup')
+  @Post('/signup')
   signup(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-  
-  @Get('/')
-  getAllUsers(){
 
+    const user = this.authService.signup(createUserDto.email,createUserDto.password);
+    return user
+  }
+
+  @Get()
+  getAllUsers() {
     return this.usersService.findAll();
   }
-
 
   @Get(':id')
   getUser(@Param('id') id: string) {
@@ -48,4 +50,3 @@ export class UsersController {
     return `Delete user ${id}`;
   }
 }
-

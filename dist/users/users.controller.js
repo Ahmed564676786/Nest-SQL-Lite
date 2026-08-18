@@ -16,13 +16,18 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const create_user_dto_1 = require("./dto/create-user.dto/create-user.dto");
+const user_response_interceptor_1 = require("../interceptors/user-response/user-response.interceptor");
+const auth_service_1 = require("./auth.service");
 let UsersController = class UsersController {
     usersService;
-    constructor(usersService) {
+    authService;
+    constructor(usersService, authService) {
         this.usersService = usersService;
+        this.authService = authService;
     }
     signup(createUserDto) {
-        return this.usersService.create(createUserDto);
+        const user = this.authService.signup(createUserDto.email, createUserDto.password);
+        return user;
     }
     getAllUsers() {
         return this.usersService.findAll();
@@ -46,7 +51,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "signup", null);
 __decorate([
-    (0, common_1.Get)('/'),
+    (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -73,7 +78,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "deleteUser", null);
 exports.UsersController = UsersController = __decorate([
+    (0, common_1.UseInterceptors)(user_response_interceptor_1.UserResponseInterceptor),
     (0, common_1.Controller)('users'),
-    __metadata("design:paramtypes", [users_service_1.UsersService])
+    __metadata("design:paramtypes", [users_service_1.UsersService,
+        auth_service_1.AuthService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map
