@@ -10,24 +10,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
+const crypto_1 = require("crypto");
+const util_1 = require("util");
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
-const crypto_1 = require("crypto");
+const scrypt = (0, util_1.promisify)(crypto_1.scrypt);
 let AuthService = class AuthService {
     usersService;
     constructor(usersService) {
         this.usersService = usersService;
     }
-    ;
-    async signup(email, password) {
-        const isEmailTaken = await this.usersService.isEmailTaken(email);
-        if (isEmailTaken) {
-            throw new common_1.BadRequestException('Email in use');
+    async signup(name, email, password) {
+        const existingUser = await this.usersService.isEmailTaken(email);
+        if (existingUser) {
+            throw new common_1.ConflictException('Email already in use');
         }
         const salt = (0, crypto_1.randomBytes)(8).toString('hex');
-        const hash = (await (0, crypto_1.scrypt)(password, salt, 32));
-        const hashedPass = salt + '.' + hash.toString('hex');
-        const user = await this.usersService.create({ email, hashedPass });
+        const hash = (await scrypt(password, salt, 32));
+        const hashedPassword = `${salt}.${hash.toString('hex')}`;
+        const user = await this.usersService.create({
+            name,
+            email,
+            password: hashedPassword,
+        });
         return user;
     }
 };

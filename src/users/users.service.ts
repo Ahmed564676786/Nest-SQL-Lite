@@ -36,7 +36,7 @@ export class UsersService {
 
 
   async isEmailTaken(email: string): Promise<boolean> {
-      const user = await this.userRepository.findOne({
+      const user = await this.usersRepository.findOne({
         where: { email },
       });
 

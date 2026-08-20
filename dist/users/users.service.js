@@ -37,7 +37,7 @@ let UsersService = class UsersService {
         return this.findOne(id);
     }
     async isEmailTaken(email) {
-        const user = await this.userRepository.findOne({
+        const user = await this.usersRepository.findOne({
             where: { email },
         });
         return !!user;

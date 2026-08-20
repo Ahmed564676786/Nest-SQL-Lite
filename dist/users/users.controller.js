@@ -26,7 +26,7 @@ let UsersController = class UsersController {
         this.authService = authService;
     }
     signup(createUserDto) {
-        const user = this.authService.signup(createUserDto.email, createUserDto.password);
+        const user = this.authService.signup(createUserDto.name, createUserDto.email, createUserDto.password);
         return user;
     }
     getAllUsers() {
@@ -44,7 +44,7 @@ let UsersController = class UsersController {
 };
 exports.UsersController = UsersController;
 __decorate([
-    (0, common_1.Post)('signup'),
+    (0, common_1.Post)('/signup'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),

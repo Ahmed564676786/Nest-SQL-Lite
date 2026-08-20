@@ -1,29 +1,40 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { promisify } from 'util';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { randomBytes, scrypt } from 'crypto';
+
+const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
+  constructor(private readonly usersService: UsersService) {}
 
-    constructor(private usersService:UsersService){};
+  async signup(name: string, email: string, password: string) {
+    // Check if email already exists
+    const existingUser = await this.usersService.isEmailTaken(email);
 
+    if (existingUser) {
+    //   throw new Error('Email already in use');
+      throw new ConflictException('Email already in use');
 
-    async signup(email: string, password: string) {
-            const isEmailTaken = await this.usersService.isEmailTaken(email);
-
-            if (isEmailTaken) {
-                throw new BadRequestException('Email in use');
-            }
-
-            const salt = randomBytes(8).toString('hex');
-
-            const hash = (await scrypt(password, salt, 32)) as Buffer;
-
-            const hashedPass = salt + '.' + hash.toString('hex');
-
-            const user = await this.usersService.create({email, hashedPass});
-
-            return user;
     }
 
+    // Generate salt
+    const salt = randomBytes(8).toString('hex');
+
+    // Hash password
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+    // Combine salt + hash
+    const hashedPassword = `${salt}.${hash.toString('hex')}`;
+
+    // Create user
+    const user = await this.usersService.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return user;
+  }
 }

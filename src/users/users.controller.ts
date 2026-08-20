@@ -26,7 +26,7 @@ export class UsersController {
   @Post('/signup')
   signup(@Body() createUserDto: CreateUserDto) {
 
-    const user = this.authService.signup(createUserDto.email,createUserDto.password);
+    const user = this.authService.signup(createUserDto.name,createUserDto.email,createUserDto.password);
     return user
   }
 
