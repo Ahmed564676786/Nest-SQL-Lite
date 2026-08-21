@@ -25,8 +25,17 @@ let UsersController = class UsersController {
         this.usersService = usersService;
         this.authService = authService;
     }
-    signup(createUserDto) {
-        const user = this.authService.signup(createUserDto.name, createUserDto.email, createUserDto.password);
+    setColor(color, session) {
+        console.log('COLOR:', color);
+        console.log('SESSION:', session);
+        session.color = color;
+        return {
+            message: 'Color saved',
+            color: session.color,
+        };
+    }
+    async signup(createUserDto) {
+        const user = await this.authService.signup(createUserDto.name, createUserDto.email, createUserDto.password);
         return user;
     }
     getAllUsers() {
@@ -44,11 +53,19 @@ let UsersController = class UsersController {
 };
 exports.UsersController = UsersController;
 __decorate([
+    (0, common_1.Get)('/colors/:color'),
+    __param(0, (0, common_1.Param)('color')),
+    __param(1, (0, common_1.Session)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "setColor", null);
+__decorate([
     (0, common_1.Post)('/signup'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UsersController.prototype, "signup", null);
 __decorate([
     (0, common_1.Get)(),

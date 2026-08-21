@@ -5,6 +5,10 @@ export declare class UsersController {
     private readonly usersService;
     private readonly authService;
     constructor(usersService: UsersService, authService: AuthService);
+    setColor(color: string, session: any): {
+        message: string;
+        color: any;
+    };
     signup(createUserDto: CreateUserDto): Promise<import("./entities/user.entity").User>;
     getAllUsers(): Promise<import("./entities/user.entity").User[]>;
     getUser(id: string): string;

@@ -7,11 +7,11 @@ import {
   Param,
   Body,
   UseInterceptors,
+  Session,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
-
 import { UserResponseInterceptor } from '../interceptors/user-response/user-response.interceptor';
 import { AuthService } from './auth.service';
 
@@ -23,12 +23,32 @@ export class UsersController {
     private readonly authService:AuthService
   ) {}
 
-  @Post('/signup')
-  signup(@Body() createUserDto: CreateUserDto) {
 
-    const user = this.authService.signup(createUserDto.name,createUserDto.email,createUserDto.password);
+  @Get('/colors/:color')
+setColor(
+  @Param('color') color: string,
+  @Session() session: any,
+) {
+  console.log('COLOR:', color);
+  console.log('SESSION:', session);
+
+  session.color = color;
+
+  return {
+    message: 'Color saved',
+    color: session.color,
+  };
+}
+
+
+  @Post('/signup')
+  async signup(@Body() createUserDto: CreateUserDto) {
+    const user = await this.authService.signup(createUserDto.name,createUserDto.email,createUserDto.password);
     return user
   }
+
+
+
 
   @Get()
   getAllUsers() {
