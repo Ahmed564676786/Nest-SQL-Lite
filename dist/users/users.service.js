@@ -36,6 +36,13 @@ let UsersService = class UsersService {
         await this.usersRepository.update(id, userData);
         return this.findOne(id);
     }
+    async findByEmail(email) {
+        return this.usersRepository
+            .createQueryBuilder('user')
+            .addSelect('user.password')
+            .where('user.email = :email', { email })
+            .getOne();
+    }
     async isEmailTaken(email) {
         const user = await this.usersRepository.findOne({
             where: { email },

@@ -9,7 +9,20 @@ export declare class UsersController {
         message: string;
         color: any;
     };
+    getColor(Session: any): any;
     signup(createUserDto: CreateUserDto): Promise<import("./entities/user.entity").User>;
+    signin(body: {
+        email: string;
+        password: string;
+    }, req: Request): Promise<{
+        message: string;
+        user: {
+            id: number;
+            name: string;
+            email: string;
+        };
+    }>;
+    whoami(Session: any): Promise<import("./entities/user.entity").User | null>;
     getAllUsers(): Promise<import("./entities/user.entity").User[]>;
     getUser(id: string): string;
     updateUser(id: string): string;

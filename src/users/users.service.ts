@@ -34,7 +34,26 @@ export class UsersService {
     return this.findOne(id);
   }
 
+//   async findByEmail(email: string) {
+//   return this.usersRepository.findOne({
+//     where: { email },
+//   });
+// }
 
+
+async findByEmail(email: string) {
+  
+  return this.usersRepository
+    .createQueryBuilder('user')
+    .addSelect('user.password')
+    .where('user.email = :email', { email })
+    .getOne();
+  
+  }
+
+
+
+  
   async isEmailTaken(email: string): Promise<boolean> {
       const user = await this.usersRepository.findOne({
         where: { email },

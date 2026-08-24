@@ -2,7 +2,7 @@ import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UsersService } from './users.service';
-
+import { UnauthorizedException } from '@nestjs/common';
 const scrypt = promisify(_scrypt);
 
 @Injectable()
@@ -37,4 +37,51 @@ export class AuthService {
 
     return user;
   }
+
+
+
+  async signin(
+  email: string,
+  password: string,
+  session: Record<string, any>,
+) {
+  const user = await this.usersService.findByEmail(email);
+
+  if (!user) {
+    throw new UnauthorizedException('Invalid email or password');
+  }
+
+  // Stored format: salt.hash
+  const [salt, storedHash] = user.password.split('.');
+
+  if (!salt || !storedHash) {
+    throw new UnauthorizedException('Invalid password data');
+  }
+
+  // Hash entered password using the stored salt
+  const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+  const hashedPassword = hash.toString('hex');
+
+  if (hashedPassword !== storedHash) {
+    throw new UnauthorizedException('Invalid email or password');
+  }
+
+  // Create session
+  session.userId = user.id;
+  session.email = user.email;
+  session.isAuthenticated = true;
+
+  return {
+    message: 'Signin successful',
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    },
+  };
+}
+
+
+
 }

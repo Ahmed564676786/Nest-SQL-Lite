@@ -5,7 +5,7 @@ import { Reflector } from '@nestjs/core';
 // import cookieSession from 'cookie-session';
 
 const cookieSession =  require('cookie-session');
-
+// import * as cookieSession from 'cookie-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

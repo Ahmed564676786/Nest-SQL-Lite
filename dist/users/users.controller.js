@@ -34,9 +34,18 @@ let UsersController = class UsersController {
             color: session.color,
         };
     }
+    getColor(Session) {
+        return Session.color;
+    }
     async signup(createUserDto) {
         const user = await this.authService.signup(createUserDto.name, createUserDto.email, createUserDto.password);
         return user;
+    }
+    async signin(body, req) {
+        return this.authService.signin(body.email, body.password, req.session);
+    }
+    whoami(Session) {
+        return this.usersService.findOne(Session.userId);
     }
     getAllUsers() {
         return this.usersService.findAll();
@@ -61,12 +70,34 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "setColor", null);
 __decorate([
+    (0, common_1.Get)('/colors'),
+    __param(0, (0, common_1.Session)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getColor", null);
+__decorate([
     (0, common_1.Post)('/signup'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "signup", null);
+__decorate([
+    (0, common_1.Post)('/signin'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Request]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "signin", null);
+__decorate([
+    (0, common_1.Get)('/whoami'),
+    __param(0, (0, common_1.Session)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "whoami", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

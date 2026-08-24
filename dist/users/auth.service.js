@@ -14,6 +14,7 @@ const crypto_1 = require("crypto");
 const util_1 = require("util");
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
+const common_2 = require("@nestjs/common");
 const scrypt = (0, util_1.promisify)(crypto_1.scrypt);
 let AuthService = class AuthService {
     usersService;
@@ -34,6 +35,32 @@ let AuthService = class AuthService {
             password: hashedPassword,
         });
         return user;
+    }
+    async signin(email, password, session) {
+        const user = await this.usersService.findByEmail(email);
+        if (!user) {
+            throw new common_2.UnauthorizedException('Invalid email or password');
+        }
+        const [salt, storedHash] = user.password.split('.');
+        if (!salt || !storedHash) {
+            throw new common_2.UnauthorizedException('Invalid password data');
+        }
+        const hash = (await scrypt(password, salt, 32));
+        const hashedPassword = hash.toString('hex');
+        if (hashedPassword !== storedHash) {
+            throw new common_2.UnauthorizedException('Invalid email or password');
+        }
+        session.userId = user.id;
+        session.email = user.email;
+        session.isAuthenticated = true;
+        return {
+            message: 'Signin successful',
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+            },
+        };
     }
 };
 exports.AuthService = AuthService;

@@ -8,7 +8,10 @@ import {
   Body,
   UseInterceptors,
   Session,
+  Req
 } from '@nestjs/common';
+
+
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
@@ -40,6 +43,12 @@ setColor(
   };
 }
 
+@Get('/colors')
+getColor(@Session() Session:any){
+
+    return  Session.color
+}
+
 
   @Post('/signup')
   async signup(@Body() createUserDto: CreateUserDto) {
@@ -48,7 +57,26 @@ setColor(
   }
 
 
+  @Post('/signin')
+  async signin(
+    @Body() body: {
+      email: string;
+      password: string;
+    },
+    @Req() req: Request,
+  ) {
+    return this.authService.signin(
+      body.email,
+      body.password,
+      (req as any).session,
+    );
+  }
 
+
+  @Get('/whoami')
+  whoami(@Session() Session:any){
+     return this.usersService.findOne(Session.userId);
+  }
 
   @Get()
   getAllUsers() {
