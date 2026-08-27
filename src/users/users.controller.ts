@@ -18,13 +18,13 @@ import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 import { UserResponseInterceptor } from '../interceptors/user-response/user-response.interceptor';
 import { AuthService } from './auth.service';
 
-@UseInterceptors(UserResponseInterceptor)
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService:AuthService
   ) {}
+
 
 
   @Get('/colors/:color')
