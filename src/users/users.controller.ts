@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 
 
-
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 import { UserResponseInterceptor } from '../interceptors/user-response/user-response.interceptor';
@@ -25,16 +24,14 @@ export class UsersController {
     private readonly authService:AuthService
   ) {}
 
-
-
   @Get('/colors/:color')
-setColor(
-  @Param('color') color: string,
-  @Session() session: any,
-) {
+  setColor(
+    @Param('color') color: string,
+    @Session() session: any,
+  ) {
+
   console.log('COLOR:', color);
   console.log('SESSION:', session);
-
   session.color = color;
 
   return {
@@ -43,11 +40,11 @@ setColor(
   };
 }
 
-@Get('/colors')
-getColor(@Session() Session:any){
+  @Get('/colors')
+  getColor(@Session() Session:any){
 
-    return  Session.color
-}
+      return  Session.color
+  }
 
 
   @Post('/signup')
@@ -73,9 +70,16 @@ getColor(@Session() Session:any){
   }
 
 
+  // @Get('/whoami')
+  // whoami(@Session() Session:any){
+  //    return this.usersService.findOne(Session.userId);
+  // }
+
   @Get('/whoami')
-  whoami(@Session() Session:any){
-     return this.usersService.findOne(Session.userId);
+  whoami(@Request(), request:Request){
+     return request.currentUser;
+
+     
   }
 
   @Get()
