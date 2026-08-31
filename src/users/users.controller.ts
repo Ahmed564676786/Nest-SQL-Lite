@@ -8,7 +8,9 @@ import {
   Body,
   UseInterceptors,
   Session,
-  Req
+  Request,
+  Req,
+
 } from '@nestjs/common';
 
 
@@ -75,17 +77,28 @@ export class UsersController {
   //    return this.usersService.findOne(Session.userId);
   // }
 
-  @Get('/whoami')
-  whoami(@Request(), request:Request){
-     return request.currentUser;
+  // @Get('/whoami')
+  // whoami(@Request(), request:Request){
+  //    return request.currentUser;
+  // }
 
-     
+  // @Get('/whoami')
+  //   whoami(@Request() request: Request) {
+  //   return request.currentUser;
+  // }
+
+
+
+  @Get('/whoami')
+  whoAmI(@Req() req: any) {
+    return req.currentUser;
   }
 
   @Get()
   getAllUsers() {
     return this.usersService.findAll();
   }
+  
 
   @Get(':id')
   getUser(@Param('id') id: string) {

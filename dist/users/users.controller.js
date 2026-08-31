@@ -43,8 +43,8 @@ let UsersController = class UsersController {
     async signin(body, req) {
         return this.authService.signin(body.email, body.password, req.session);
     }
-    whoami(Session) {
-        return this.usersService.findOne(Session.userId);
+    whoami(request) {
+        return request.currentUser;
     }
     getAllUsers() {
         return this.usersService.findAll();
@@ -85,14 +85,14 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/signin'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
+    __param(1, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Request]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "signin", null);
 __decorate([
     (0, common_1.Get)('/whoami'),
-    __param(0, (0, common_1.Session)()),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

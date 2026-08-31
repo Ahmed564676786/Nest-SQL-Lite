@@ -22,7 +22,7 @@ export declare class UsersController {
             email: string;
         };
     }>;
-    whoami(Session: any): Promise<import("./entities/user.entity").User | null>;
+    whoami(request: Request): any;
     getAllUsers(): Promise<import("./entities/user.entity").User[]>;
     getUser(id: string): string;
     updateUser(id: string): string;
