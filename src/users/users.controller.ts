@@ -18,6 +18,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 import { UserResponseInterceptor } from '../interceptors/user-response/user-response.interceptor';
 import { AuthService } from './auth.service';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 
 @Controller('users')
 export class UsersController {
@@ -88,18 +89,30 @@ export class UsersController {
   // }
 
 
+  // @Get('/whoami')
+  // whoAmI(@Req() req: any) {
+  //   return req.currentUser;
+  // }
+
+  // not worked
+  // @Get('/whoami')
+  // whoAmI(@CurrentUserInterceptor() user: any) {
+
+  //   return user;
+  // }
 
   @Get('/whoami')
+  @UseInterceptors(CurrentUserInterceptor)
   whoAmI(@Req() req: any) {
-    return req.currentUser;
+      return req.currentUser;
   }
+
 
   @Get()
   getAllUsers() {
     return this.usersService.findAll();
   }
   
-
   @Get(':id')
   getUser(@Param('id') id: string) {
     return `Get user ${id}`;

@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const create_user_dto_1 = require("./dto/create-user.dto/create-user.dto");
 const auth_service_1 = require("./auth.service");
+const current_user_interceptor_1 = require("./interceptors/current-user.interceptor");
 let UsersController = class UsersController {
     usersService;
     authService;
@@ -43,8 +44,8 @@ let UsersController = class UsersController {
     async signin(body, req) {
         return this.authService.signin(body.email, body.password, req.session);
     }
-    whoami(request) {
-        return request.currentUser;
+    whoAmI(req) {
+        return req.currentUser;
     }
     getAllUsers() {
         return this.usersService.findAll();
@@ -85,18 +86,19 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/signin'),
     __param(0, (0, common_1.Body)()),
-    __param(1, Req()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "signin", null);
 __decorate([
     (0, common_1.Get)('/whoami'),
-    __param(0, (0, common_1.Request)()),
+    (0, common_1.UseInterceptors)(current_user_interceptor_1.CurrentUserInterceptor),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "whoami", null);
+], UsersController.prototype, "whoAmI", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
