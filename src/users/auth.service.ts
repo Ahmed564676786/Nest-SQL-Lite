@@ -11,7 +11,7 @@ export class AuthService {
 
   async signup(name: string, email: string, password: string) {
     // Check if email already exists
-    const existingUser = await this.usersService.isEmailTaken(email);
+    const existingUser = await this.usersService.isEmailTaken(email); //mock wala
 
     if (existingUser) {
     //   throw new Error('Email already in use');
@@ -28,12 +28,14 @@ export class AuthService {
     // Combine salt + hash
     const hashedPassword = `${salt}.${hash.toString('hex')}`;
 
-    // Create user
+    // Create user   - mock wala =- jest wala
     const user = await this.usersService.create({
       name,
       email,
       password: hashedPassword,
-    });
+    });  
+
+
 
     return user;
   }

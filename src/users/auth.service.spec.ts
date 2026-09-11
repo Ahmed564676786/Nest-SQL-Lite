@@ -83,7 +83,6 @@ describe('AuthService', () => {
     isEmailTaken: jest.fn().mockResolvedValue(null),
   };
 
-  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -103,8 +102,9 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
+
   it('creates a new user with a salted and hashed password', async () => {
-    await service.signup('Test User', 'test@example.com', 'password');
+    await service.signup('Test User', 'test@example.com', '122212333');
 
     const createMock = fakeUsersService.create as jest.Mock;
 
@@ -116,7 +116,7 @@ describe('AuthService', () => {
 
     expect(createdUser.name).toBe('Test User');
     expect(createdUser.email).toBe('test@example.com');
-
+   
     // Password should not be the original password
     expect(createdUser.password).not.toBe('password');
 
