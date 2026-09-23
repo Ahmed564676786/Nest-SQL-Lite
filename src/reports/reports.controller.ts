@@ -5,10 +5,13 @@ import { ReportsService } from './reports.service';
 @Controller('reports')
 export class ReportsController {
 
+  
   constructor(private readonly reportService: ReportsService) {}
-
   @Post()
   createReport(@Body() body: CreateReportDto) {
     return this.reportService.create(body);
   }
+ 
+  
+  
 }
