@@ -16,21 +16,28 @@ exports.ReportsController = void 0;
 const common_1 = require("@nestjs/common");
 const create_report_dto_1 = require("./dto/create-report.dto");
 const reports_service_1 = require("./reports.service");
+const current_user_decorator_1 = require("../users/decorators/current-user.decorator");
+const user_entity_1 = require("../users/entities/user.entity");
+const current_user_interceptor_1 = require("../users/interceptors/current-user.interceptor");
 let ReportsController = class ReportsController {
     reportService;
     constructor(reportService) {
         this.reportService = reportService;
     }
-    createReport(body) {
-        return this.reportService.create(body);
+    createReport(body, user) {
+        console.log('CURRENT USER:', user);
+        return this.reportService.create(body, user);
     }
 };
 exports.ReportsController = ReportsController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseInterceptors)(current_user_interceptor_1.CurrentUserInterceptor),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_report_dto_1.CreateReportDto]),
+    __metadata("design:paramtypes", [create_report_dto_1.CreateReportDto,
+        user_entity_1.User]),
     __metadata("design:returntype", void 0)
 ], ReportsController.prototype, "createReport", null);
 exports.ReportsController = ReportsController = __decorate([

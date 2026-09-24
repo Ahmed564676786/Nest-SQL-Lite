@@ -28,5 +28,5 @@ export class Report {
   lat!: number;
 
   @ManyToOne(() => User, (user) => user.reports)
-  user: User;
+  user!: User;
 }

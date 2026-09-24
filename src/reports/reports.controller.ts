@@ -1,17 +1,23 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportsService } from './reports.service';
+import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
+import { CurrentUserInterceptor } from '../users/interceptors/current-user.interceptor';
 
 @Controller('reports')
 export class ReportsController {
-
-  
   constructor(private readonly reportService: ReportsService) {}
+
   @Post()
-  createReport(@Body() body: CreateReportDto) {
-    return this.reportService.create(body);
+  @UseInterceptors(CurrentUserInterceptor)
+  createReport(
+    @Body() body: CreateReportDto,
+    @CurrentUser() user: User,
+  ) {
+    console.log('CURRENT USER:', user);
+
+    return this.reportService.create(body, user);
   }
- 
-  
-  
 }

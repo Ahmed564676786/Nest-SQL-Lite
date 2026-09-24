@@ -32,11 +32,9 @@ export class UsersController {
     @Param('color') color: string,
     @Session() session: any,
   ) {
-
   console.log('COLOR:', color);
   console.log('SESSION:', session);
   session.color = color;
-
   return {
     message: 'Color saved',
     color: session.color,
@@ -45,14 +43,10 @@ export class UsersController {
 
   @Get('/colors')
   getColor(@Session() Session:any){
-
       return  Session.color
   }
 
-
-  @Post('/signup')
-
-  
+  @Post('/signup')  
   async signup(@Body() createUserDto: CreateUserDto) {
     const user = await this.authService.signup(createUserDto.name,createUserDto.email,createUserDto.password);
     return user
