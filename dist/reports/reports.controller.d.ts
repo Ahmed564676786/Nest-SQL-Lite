@@ -5,4 +5,5 @@ export declare class ReportsController {
     private readonly reportService;
     constructor(reportService: ReportsService);
     createReport(body: CreateReportDto, user: User): Promise<import("./entities/report.entity").Report>;
+    approveReport(id: string, body: ApproveReportDto): any;
 }

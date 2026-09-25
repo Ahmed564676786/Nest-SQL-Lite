@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReportsController = void 0;
 const common_1 = require("@nestjs/common");
@@ -28,6 +29,9 @@ let ReportsController = class ReportsController {
         console.log('CURRENT USER:', user);
         return this.reportService.create(body, user);
     }
+    approveReport(id, body) {
+        return this.reportsService.approveReport(+id, body.approved);
+    }
 };
 exports.ReportsController = ReportsController;
 __decorate([
@@ -40,6 +44,14 @@ __decorate([
         user_entity_1.User]),
     __metadata("design:returntype", void 0)
 ], ReportsController.prototype, "createReport", null);
+__decorate([
+    Patch('/:id'),
+    __param(0, Param('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, typeof (_a = typeof ApproveReportDto !== "undefined" && ApproveReportDto) === "function" ? _a : Object]),
+    __metadata("design:returntype", void 0)
+], ReportsController.prototype, "approveReport", null);
 exports.ReportsController = ReportsController = __decorate([
     (0, common_1.Controller)('reports'),
     __metadata("design:paramtypes", [reports_service_1.ReportsService])

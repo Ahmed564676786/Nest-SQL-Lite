@@ -6,6 +6,9 @@ import { CurrentUser } from 'src/users/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { CurrentUserInterceptor } from '../users/interceptors/current-user.interceptor';
 
+
+
+
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportService: ReportsService) {}
@@ -20,4 +23,16 @@ export class ReportsController {
 
     return this.reportService.create(body, user);
   }
+
+
+  @Patch('/:id')
+  approveReport(
+    @Param('id') id: string,
+    @Body() body: ApproveReportDto,
+  ) {
+    return this.reportsService.approveReport(+id, body.approved);
+  }
+
+
+
 }

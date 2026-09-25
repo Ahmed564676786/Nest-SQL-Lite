@@ -22,6 +22,7 @@ let Report = class Report {
     lng;
     lat;
     user;
+    approved = false;
 };
 exports.Report = Report;
 __decorate([
@@ -60,6 +61,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.reports),
     __metadata("design:type", user_entity_1.User)
 ], Report.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Report.prototype, "approved", void 0);
 exports.Report = Report = __decorate([
     (0, typeorm_1.Entity)()
 ], Report);

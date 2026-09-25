@@ -9,4 +9,5 @@ export declare class Report {
     lng: number;
     lat: number;
     user: User;
+    approved: boolean;
 }
