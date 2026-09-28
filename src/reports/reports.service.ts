@@ -4,6 +4,11 @@ import { Report } from './entities/report.entity';
 import { Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { User } from '../users/entities/user.entity';
+
+
+
+
+
 @Injectable()
 export class ReportsService {
 
@@ -20,6 +25,7 @@ export class ReportsService {
 
 
 async approveReport(id: number, approved: boolean) {
+  
   const report = await this.repo.findOne({
     where: { id },
   });
@@ -28,9 +34,10 @@ async approveReport(id: number, approved: boolean) {
     throw new NotFoundException('Report not found');
   }
 
-  report.approved = approved;
 
+  report.approved = approved;
   return this.repo.save(report);
 }
+
 
 }
