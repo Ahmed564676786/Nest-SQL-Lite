@@ -18,6 +18,7 @@ const users_service_1 = require("./users.service");
 const create_user_dto_1 = require("./dto/create-user.dto/create-user.dto");
 const auth_service_1 = require("./auth.service");
 const current_user_interceptor_1 = require("./interceptors/current-user.interceptor");
+const admin_guard_1 = require("../guards/admin.guard");
 let UsersController = class UsersController {
     usersService;
     authService;
@@ -100,6 +101,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "whoAmI", null);
 __decorate([
+    (0, common_1.UseGuards)(admin_guard_1.AdminGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

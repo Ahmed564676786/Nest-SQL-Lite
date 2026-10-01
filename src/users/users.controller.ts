@@ -10,6 +10,7 @@ import {
   Session,
   Request,
   Req,
+  UseGuards,
 
 } from '@nestjs/common';
 
@@ -19,6 +20,7 @@ import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 import { UserResponseInterceptor } from '../interceptors/user-response/user-response.interceptor';
 import { AuthService } from './auth.service';
 import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -103,7 +105,7 @@ export class UsersController {
       return req.currentUser;
   }
 
-
+  @UseGuards(AdminGuard)
   @Get()
   getAllUsers() {
     return this.usersService.findAll();

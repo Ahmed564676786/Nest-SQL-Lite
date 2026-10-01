@@ -5,4 +5,5 @@ export declare class User {
     email: string;
     reports: Report[];
     password: string;
+    admin: boolean;
 }

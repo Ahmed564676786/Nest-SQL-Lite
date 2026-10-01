@@ -21,5 +21,8 @@ export class User {
   password!: string;
 
 
+  @Column({default:true})
+  admin!: boolean;
 
-}
+
+} 

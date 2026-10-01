@@ -19,6 +19,7 @@ let User = class User {
     email;
     reports;
     password;
+    admin;
 };
 exports.User = User;
 __decorate([
@@ -42,6 +43,10 @@ __decorate([
     (0, typeorm_1.Column)({ select: false }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
+], User.prototype, "admin", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);
