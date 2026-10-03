@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseInterceptors,Patch ,Param} from '@nestjs/common';
+import { Body, Query,Controller, Post, UseInterceptors,Patch ,Param, Get} from '@nestjs/common';
 
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportsService } from './reports.service';
@@ -6,6 +6,7 @@ import { CurrentUser } from 'src/users/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { CurrentUserInterceptor } from '../users/interceptors/current-user.interceptor';
 import { ApproveReportDto } from './dto/approve-report.dto';
+import { GetEstimateDto } from './dto/get-estimate.dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -27,6 +28,12 @@ export class ReportsController {
     @Body() body: ApproveReportDto,
   ) {
     return this.reportService.approveReport(+id, body.approved);
+  }
+
+
+  @Get('estimate')
+  getEstimate(@Query() query: GetEstimateDto) {
+    return this.reportService.createEstimate(query);
   }
 }
 

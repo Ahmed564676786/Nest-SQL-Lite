@@ -20,6 +20,7 @@ const current_user_decorator_1 = require("../users/decorators/current-user.decor
 const user_entity_1 = require("../users/entities/user.entity");
 const current_user_interceptor_1 = require("../users/interceptors/current-user.interceptor");
 const approve_report_dto_1 = require("./dto/approve-report.dto");
+const get_estimate_dto_1 = require("./dto/get-estimate.dto");
 let ReportsController = class ReportsController {
     reportService;
     constructor(reportService) {
@@ -31,6 +32,9 @@ let ReportsController = class ReportsController {
     }
     approveReport(id, body) {
         return this.reportService.approveReport(+id, body.approved);
+    }
+    getEstimate(query) {
+        return this.reportService.createEstimate(query);
     }
 };
 exports.ReportsController = ReportsController;
@@ -52,6 +56,13 @@ __decorate([
     __metadata("design:paramtypes", [String, approve_report_dto_1.ApproveReportDto]),
     __metadata("design:returntype", void 0)
 ], ReportsController.prototype, "approveReport", null);
+__decorate([
+    (0, common_1.Get)('estimate'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [get_estimate_dto_1.GetEstimateDto]),
+    __metadata("design:returntype", void 0)
+], ReportsController.prototype, "getEstimate", null);
 exports.ReportsController = ReportsController = __decorate([
     (0, common_1.Controller)('reports'),
     __metadata("design:paramtypes", [reports_service_1.ReportsService])
